@@ -1,6 +1,6 @@
 // ===== GAME STATE & CONFIGURATION =====
 const CONFIG = {
-    API_URL: 'https://your-render-app.onrender.com/api',
+    API_URL: 'https://gladiator-arena-api.onrender.com/api',
     ENERGY_RESTORE_RATE: 20,
     ENERGY_RESTORE_INTERVAL: 30, // minutes
     DAILY_REWARD_BASE: 100,
