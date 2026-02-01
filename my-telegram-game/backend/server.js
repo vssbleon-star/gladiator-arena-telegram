@@ -14,9 +14,13 @@ app.use(helmet({
     crossOriginEmbedderPolicy: false
 }));
 app.use(cors({
-    origin: '*',
+    origin: [
+        'https://gladiator-arena-telegram-1.onrender.com', // ваш фронтенд
+        'http://localhost:3000' // для локальной разработки
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -1163,3 +1167,4 @@ app.listen(PORT, () => {
     console.log(`🎮 Game available at http://localhost:${PORT}`);
 
 });
+
