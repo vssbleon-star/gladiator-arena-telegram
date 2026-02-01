@@ -13,11 +13,9 @@ app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false
 }));
+// В server.js замените cors настройки:
 app.use(cors({
-    origin: [
-        'https://gladiator-arena-telegram-1.onrender.com', // ваш фронтенд
-        'http://localhost:3000' // для локальной разработки
-    ],
+    origin: '*',  // Разрешаем все источники для тестирования
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -1167,4 +1165,5 @@ app.listen(PORT, () => {
     console.log(`🎮 Game available at http://localhost:${PORT}`);
 
 });
+
 
