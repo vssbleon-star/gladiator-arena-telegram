@@ -27,7 +27,7 @@ let gameState = {
 };
 
 // ===== TELEGRAM WEB APP INTEGRATION =====
-const tg = window.Telegram.WebApp;
+
 
 // Initialize Telegram Web App
 function initTelegram() {
