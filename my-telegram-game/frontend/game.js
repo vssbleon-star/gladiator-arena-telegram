@@ -51,30 +51,53 @@ function initTelegram() {
 async function apiRequest(endpoint, method = 'GET', data = null) {
     showLoading(true);
     
-    const url = `${CONFIG.API_URL}${endpoint}`;
+    // Добавляем /api к endpoint если его нет
+    let fullEndpoint = endpoint;
+    if (!endpoint.startsWith('/api/') && endpoint !== '/api') {
+        fullEndpoint = '/api' + (endpoint.startsWith('/') ? endpoint : '/' + endpoint);
+    }
+    
+    const url = `${CONFIG.API_URL}${fullEndpoint}`;
+    console.log(`🚀 API Request: ${method} ${url}`);
+    
     const options = {
         method,
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
     };
     
     if (data) {
         options.body = JSON.stringify(data);
+        console.log('Request data:', data);
     }
     
     try {
         const response = await fetch(url, options);
-        const result = await response.json();
+        console.log('📡 Response status:', response.status);
         
-        if (!response.ok) {
-            throw new Error(result.error || 'API Error');
+        const text = await response.text();
+        console.log('📡 Response text:', text);
+        
+        let result;
+        try {
+            result = JSON.parse(text);
+        } catch (e) {
+            console.error('❌ JSON parse error:', e.message);
+            throw new Error(`Invalid JSON: ${text.substring(0, 100)}`);
         }
         
+        if (!response.ok) {
+            throw new Error(result.error || `HTTP ${response.status}`);
+        }
+        
+        console.log('✅ API Success:', result);
         return result;
+        
     } catch (error) {
-        console.error('API Request Error:', error);
-        showToast(error.message || 'Ошибка соединения', 'error');
+        console.error('❌ API Error:', error);
+        showToast(`API Error: ${error.message}`, 'error');
         throw error;
     } finally {
         showLoading(false);
