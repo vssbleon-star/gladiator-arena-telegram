@@ -2,7 +2,8 @@
 // В начале game.js ЗАМЕНИТЕ API_URL:
 // В начале game.js ИЗМЕНИТЕ API_URL:
 const CONFIG = {
-    API_URL: 'https://gladiator-arena-telegram.onrender.com', // БЕЗ /api в конце!
+    API_URL: 'https://gladiator-arena-telegram.onrender.com', // без /api
+    WEBAPP_URL: 'https://gladiator-arena-telegram-1.onrender.com',
     ENERGY_RESTORE_RATE: 20,
     ENERGY_RESTORE_INTERVAL: 30,
     DAILY_REWARD_BASE: 100,
