@@ -1,14 +1,18 @@
 // ===== GAME STATE & CONFIGURATION =====
 // В начале game.js ЗАМЕНИТЕ API_URL:
+// В начале game.js ИЗМЕНИТЕ API_URL:
 const CONFIG = {
-    API_URL: 'https://gladiator-arena-telegram.onrender.com/api', // Бекенд
-    WEBAPP_URL: 'https://gladiator-arena-telegram-1.onrender.com', // Фронтенд
+    API_URL: 'https://gladiator-arena-telegram.onrender.com', // БЕЗ /api в конце!
     ENERGY_RESTORE_RATE: 20,
     ENERGY_RESTORE_INTERVAL: 30,
     DAILY_REWARD_BASE: 100,
     VIBRATION_ENABLED: true,
     SOUND_ENABLED: true
 };
+
+// Добавьте отладку:
+console.log('=== CONFIG LOADED ===');
+console.log('API_URL:', CONFIG.API_URL);
 
 let gameState = {
     player: null,
