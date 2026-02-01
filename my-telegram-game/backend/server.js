@@ -1125,12 +1125,24 @@ app.get('/api/shop/items', async (req, res) => {
     });
 });
 
-// Static files for Mini App
-app.use(express.static('public'));
-
-// Serve frontend
+// Главная страница API
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    res.json({
+        service: '🏛️ Gladiator Arena API',
+        status: 'running',
+        version: '1.0.0',
+        database: 'connected',
+        endpoints: {
+            player_init: 'POST /api/player/init',
+            player_data: 'GET /api/player/:telegramId',
+            battle_start: 'POST /api/battle/start',
+            shop_items: 'GET /api/shop/items',
+            leaderboard: 'GET /api/leaderboard',
+            daily_reward: 'POST /api/daily-reward',
+            health: 'GET /health'
+        },
+        message: 'API для Telegram игры Gladiator Arena'
+    });
 });
 
 // Error handling middleware
@@ -1149,4 +1161,5 @@ app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📡 API endpoints available at http://localhost:${PORT}/api`);
     console.log(`🎮 Game available at http://localhost:${PORT}`);
+
 });
