@@ -31,20 +31,72 @@ const tg = window.Telegram.WebApp;
 
 // Initialize Telegram Web App
 function initTelegram() {
-    tg.expand();
-    tg.enableClosingConfirmation();
-    tg.setHeaderColor('#1a1a2e');
-    tg.setBackgroundColor('#0c0c14');
+    console.log('=== INITIALIZING GAME ===');
     
-    // Get Telegram user data
-    gameState.telegramUser = tg.initDataUnsafe.user;
-    
-    if (!gameState.telegramUser) {
-        showToast('Ошибка загрузки Telegram данных', 'error');
-        return;
+    // Проверяем доступность Telegram WebApp
+    if (window.Telegram && window.Telegram.WebApp) {
+        console.log('✅ Telegram WebApp detected');
+        tg = window.Telegram.WebApp;
+        
+        // Разворачиваем на весь экран
+        tg.expand();
+        tg.enableClosingConfirmation();
+        tg.setHeaderColor('#1a1a2e');
+        tg.setBackgroundColor('#0c0c14');
+        
+        // Получаем данные пользователя
+        console.log('initData:', tg.initData);
+        console.log('initDataUnsafe:', tg.initDataUnsafe);
+        
+        // Проверяем разные способы получения данных
+        if (tg.initDataUnsafe?.user) {
+            gameState.telegramUser = tg.initDataUnsafe.user;
+            console.log('✅ User from initDataUnsafe:', gameState.telegramUser);
+        } else {
+            // Пробуем получить из query параметров
+            const urlParams = new URLSearchParams(window.location.search);
+            const tgWebAppData = urlParams.get('tgWebAppData');
+            
+            if (tgWebAppData) {
+                console.log('Found tgWebAppData in URL');
+                // Парсим данные если они есть в URL
+                try {
+                    const data = JSON.parse(decodeURIComponent(tgWebAppData));
+                    gameState.telegramUser = data.user;
+                } catch (e) {
+                    console.log('Could not parse tgWebAppData');
+                }
+            }
+            
+            // Если все еще нет данных
+            if (!gameState.telegramUser) {
+                console.log('⚠️ No Telegram user data, using test data');
+                gameState.telegramUser = {
+                    id: Math.floor(Math.random() * 1000000),
+                    username: 'telegram_user',
+                    first_name: 'Telegram',
+                    last_name: 'User'
+                };
+            }
+        }
+    } else {
+        console.log('⚠️ No Telegram WebApp - running in browser mode');
+        
+        // Режим браузера
+        gameState.telegramUser = {
+            id: 123456789,
+            username: 'browser_player',
+            first_name: 'Браузерный',
+            last_name: 'Игрок'
+        };
+        
+        // Показываем информационное сообщение
+        showToast('Запуск в тестовом режиме', 'info');
     }
     
-    console.log('Telegram User:', gameState.telegramUser);
+    console.log('Final user data:', gameState.telegramUser);
+    
+    // Загружаем данные игрока
     loadPlayerData();
 }
 
